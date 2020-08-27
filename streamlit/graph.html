@@ -1,0 +1,123 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>None</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750px;
+            background-color: #E5ECF6;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#2169AD", "font": {"color": "#444444"}, "id": "weakness", "label": "weakness", "shape": "dot", "size": 14}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "moment", "label": "moment", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "exam", "label": "exam", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "strength", "label": "strength", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "scar", "label": "scar", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "contract", "label": "contract", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "rest", "label": "rest", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "cause", "label": "cause", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "appearance", "label": "appearance", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "disease", "label": "disease", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "suddenly", "label": "suddenly", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "dementia", "label": "dementia", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "laughter", "label": "laughter", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "slowly", "label": "slowly", "shape": "dot", "size": 10}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "age", "label": "age", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "ageing", "label": "ageing", "shape": "dot", "size": 14}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "alzheimer  ", "label": "alzheimer  ", "shape": "dot", "size": 10}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "alzheimer  disease", "label": "alzheimer  disease", "shape": "dot", "size": 10}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "memory", "label": "memory", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "people", "label": "people", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "doctor", "label": "doctor", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "brain", "label": "brain", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "person", "label": "person", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "alzheimer", "label": "alzheimer", "shape": "dot", "size": 14}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "dreadful", "label": "dreadful", "shape": "dot", "size": 14}, {"color": "#78CABC", "font": {"color": "#444444"}, "id": "foretell", "label": "foretell", "shape": "dot", "size": 10}, {"color": "#2169AD", "font": {"color": "#444444"}, "id": "progress", "label": "progress", "shape": "dot", "size": 14}]);
+        edges = new vis.DataSet([{"arrows": "to", "from": "weakness", "to": "moment", "weight": 22}, {"arrows": "to", "from": "weakness", "to": "exam", "weight": 23}, {"arrows": "to", "from": "weakness", "to": "strength", "weight": 32}, {"arrows": "to", "from": "weakness", "to": "scar", "weight": 25}, {"arrows": "to", "from": "weakness", "to": "contract", "weight": 22}, {"arrows": "to", "from": "weakness", "to": "rest", "weight": 20}, {"arrows": "to", "from": "weakness", "to": "cause", "weight": 26}, {"arrows": "to", "from": "weakness", "to": "appearance", "weight": 21}, {"arrows": "to", "from": "weakness", "to": "disease", "weight": 21}, {"arrows": "to", "from": "weakness", "to": "suddenly", "weight": 39}, {"arrows": "to", "from": "weakness", "to": "dementia", "weight": 26}, {"arrows": "to", "from": "weakness", "to": "laughter", "weight": 27}, {"arrows": "to", "from": "weakness", "to": "slowly", "weight": 22}, {"arrows": "to", "from": "age", "to": "dementia", "weight": 28}, {"arrows": "to", "from": "ageing", "to": "alzheimer  ", "weight": 33}, {"arrows": "to", "from": "ageing", "to": "alzheimer  disease", "weight": 36}, {"arrows": "to", "from": "ageing", "to": "dementia", "weight": 35}, {"arrows": "to", "from": "memory", "to": "dementia", "weight": 26}, {"arrows": "to", "from": "people", "to": "alzheimer  ", "weight": 23}, {"arrows": "to", "from": "people", "to": "alzheimer  disease", "weight": 27}, {"arrows": "to", "from": "people", "to": "dementia", "weight": 43}, {"arrows": "to", "from": "doctor", "to": "dementia", "weight": 21}, {"arrows": "to", "from": "brain", "to": "alzheimer  ", "weight": 30}, {"arrows": "to", "from": "brain", "to": "alzheimer  disease", "weight": 26}, {"arrows": "to", "from": "brain", "to": "dementia", "weight": 23}, {"arrows": "to", "from": "person", "to": "alzheimer  disease", "weight": 23}, {"arrows": "to", "from": "person", "to": "dementia", "weight": 28}, {"arrows": "to", "from": "alzheimer", "to": "alzheimer  ", "weight": 84}, {"arrows": "to", "from": "alzheimer", "to": "alzheimer  disease", "weight": 81}, {"arrows": "to", "from": "alzheimer", "to": "dementia", "weight": 57}, {"arrows": "to", "from": "disease", "to": "alzheimer  ", "weight": 49}, {"arrows": "to", "from": "disease", "to": "alzheimer  disease", "weight": 77}, {"arrows": "to", "from": "disease", "to": "dementia", "weight": 51}, {"arrows": "to", "from": "dreadful", "to": "alzheimer  ", "weight": 22}, {"arrows": "to", "from": "dreadful", "to": "alzheimer  disease", "weight": 29}, {"arrows": "to", "from": "dreadful", "to": "dementia", "weight": 23}, {"arrows": "to", "from": "dementia", "to": "alzheimer  ", "weight": 66}, {"arrows": "to", "from": "dementia", "to": "alzheimer  disease", "weight": 69}, {"arrows": "to", "from": "dementia", "to": "foretell", "weight": 30}, {"arrows": "to", "from": "foretell", "to": "alzheimer  ", "weight": 24}, {"arrows": "to", "from": "foretell", "to": "alzheimer  disease", "weight": 32}, {"arrows": "to", "from": "progress", "to": "alzheimer  disease", "weight": 22}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
