@@ -8,6 +8,11 @@ from pyvis.network import Network
 from spacy_streamlit import load_model
 import streamlit.components.v1 as stc
 from nltk.tokenize import sent_tokenize
+from numpy import array
+from umap import UMAP
+from sklearn.preprocessing import StandardScaler
+import plotly.express as px
+
 
 def st_graph(html):
     graph_file = codecs.open(html, 'r')
@@ -80,3 +85,20 @@ text = st.selectbox("", sentences)
 doc = nlp(text)
 spacy_streamlit.visualize_ner(doc, labels=nlp.get_pipe("ner").labels, show_table=False, title='Named Entity Recognition')
 spacy_streamlit.visualize_parser(doc)
+
+#Umap 3D
+st.subheader("Embedding Visualization")
+words = ['weakness', 'suddenly', 'strength', 'laughter', 'cause', 'dementia', 'scar', 'exam', 'moment', 'slowly', 'contract', 'disease', 'appearance', 'rest', 'my', 'dreadful', 'concern', 'rush', 'doctor', 'husband', 'maybe', 'problem', 'part', 'pull', 'compensate', 'concerned', 'heal', 'function', 'probably', 'hate', 'something', 'there', 'person', 'specialise', 'particularly', 'work', 'lot', 'explain', 'most', 'side', 'because', 'thing', 'people', 'damage', 'happy', 'progress', 'hear', 'oh', 'short', 'happen', 'shrinkage', 'age', 'why', 'fine', 'ahead', 'think', 'many', 'again', 'whatever', 'quite', 'rim', 'move', 'ageing', 'go', 'wound', 'okay', 'computer', 'nobody', 'mind', 'memory', 'whatsoever', 'like', 'fair', 'pen', 'fact', 'short-term', 'one', 'pointer', 'chunk', 'anything', 'big', 'everything', 'tell', 'common', 'piece', 'look', 'yeah', 'really', 'middle', 'very', 'comment', 'foretell', 'criterion', 'fire', 'just', 'more', 'actually', 'miss', 'area', 'recent', 'no', 'well', 'little', 'is', 'how', 'fulfil', 'highlight', 'much', 'but', 'yes', 'word', 'from', 'time', 'it', 'describe', 'change', 'issue', 'tend', 'talk', 'twelve', 'or', 'reserve', 'over', 'future', 'sort', 'other', 'eight', 'bit', 'space', 'alzheimer', 'any', 'relevance', 'use', 'learn', 'once', 'extra', 'new', 'a', 'these', 'be', 'year', 'away', 'clearly', 'hall', 'question', 'way', 'around', 'suppose', 'that', 'and', 'brain', 'say', 'lucky', 'what', 'to', 'know', 'less', 'scan', 'not', 'become', 'fail', 'normal', 'enough', 'of', 'small', 'by', 'this', 'have', 'in', 'obviously', 'ten', 'those', 'vessel', 'good', 'up', 'will', 'combination', 'rather', 'should', 'if', 'so', 'plan', 'interesting', 'chat', 'let', 'now', 'imply', 'the', 'image', 'information', 'get', 'particular', 'test', 'show', 'about', 'strong', 'seventy', 'would', 'two', 'eighty', 'grey', 'at', 'last', 'always', 'blood', 'on', 'first', 'light', 'can', 'point', 'family', 'take', 'between', 'must', 'than', 'dr', 'honest', 'which', 'do', 'seem', 'an', 'all', 'black', '10', ' ', '  ', '   ', 'johnson', 'gosh', 'when', 'far', 'mean', 'with', 'absolutely', 'for', 'make', 'as', 'somewhere', 'screen', 'true', '20', 'correct', 'into', 'specifically', '90', 'dark', 'start', 'bottom', 'then', 'd', '100', 'out', 'line', 'where', 'pass', 'ct', 'i', 'round', 'open', 'mrs', 'clog']
+vectors = []
+for word in words:
+    vectors.append(nlp(word).vector)
+vectors = array(vectors)
+st.sidebar.subheader('Embedding Visualization')
+n_words = st.sidebar.slider("Number of words",1, len(words), 30)
+words = array(words[:n_words])
+vectors = vectors[:n_words, :]
+reducer = UMAP(n_components=3)
+scaled_data = StandardScaler().fit_transform(vectors)
+embedding = reducer.fit_transform(scaled_data)
+fig = px.scatter_3d(x = embedding[:, 0], y = embedding[:, 1], z = embedding[:, 2], text = words, hover_name=words)
+st.plotly_chart(fig)
