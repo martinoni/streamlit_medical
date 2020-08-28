@@ -29,15 +29,12 @@ def page_rank(n, page_graph):
     summary = sorted(ranks.keys(), key=lambda k: ranks[k], reverse=True)[:n]
     return summary, ranks
 
-
 graph_file = srsly.read_json('graph.json')
 
 #Pre-Processing 
 transcription = srsly.read_json('medical_transcription.json')
-#transcription_cleaned = process_text(transcription['text'])
 transcription_cleaned = pre_processing(transcription['text'])
 sentences = sent_tokenize(transcription_cleaned)
-
 
 st.sidebar.image('logo_cdr.png', use_column_width=True)
 #Load Model
@@ -49,10 +46,9 @@ if model == 'Clinical':
 elif model == 'General':
     nlp = load_model("en_core_web_sm")
 
+#Graph
 st.sidebar.subheader('Graph')
 threshold = st.sidebar.slider("Similarity Threshold",0.0, 1.0)
-
-
 st.title('Medical Graph')
 
 page_graph = nx.Graph()
@@ -65,11 +61,11 @@ for link in graph_file['links']:
         graph.add_edge(link['source'], link['target'], weight = round(similarity * 100))
         page_graph.add_edge(link['source'], link['target'], weight = similarity)
 
-
 graph.force_atlas_2based()
 graph.show('graph.html')
 st_graph('graph.html')
 
+#Page Rank
 st.header('Page Rank')
 n_words = st.sidebar.slider("Page Rank", 1, 20, 10)
 summary, ranks = page_rank(n_words, page_graph)
@@ -78,7 +74,7 @@ plt.barh(list(word_dict.keys()), list(word_dict.values()), align='center')
 plt.gca().invert_yaxis()
 st.pyplot()
 
-
+#NER POS
 st.subheader("Sentence")
 text = st.selectbox("", sentences)
 doc = nlp(text)
