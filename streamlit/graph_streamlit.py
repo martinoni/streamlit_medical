@@ -29,7 +29,7 @@ def page_rank(n, page_graph):
     summary = sorted(ranks.keys(), key=lambda k: ranks[k], reverse=True)[:n]
     return summary, ranks
 
-graph_file = srsly.read_json('graph.json')
+graph_file = srsly.read_json('graph_json.json')
 
 #Pre-Processing 
 transcription = srsly.read_json('medical_transcription.json')
