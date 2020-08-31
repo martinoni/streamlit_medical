@@ -61,7 +61,7 @@ graph = Network(width='100%',bgcolor="white", font_color="#444444", directed=Tru
 for link in graph_file['links']:
     similarity = float(link['weight'])
     if similarity >= threshold and similarity != 1.0:
-        graph.add_node(link['source'], size=14, color = '#2169AD')
+        graph.add_node(link['source'], size=10, color = '#78CABC')
         graph.add_node(link['target'], size=10, color = '#78CABC')
         graph.add_edge(link['source'], link['target'], weight = round(similarity * 100))
         page_graph.add_edge(link['source'], link['target'], weight = similarity)
