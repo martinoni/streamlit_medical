@@ -56,6 +56,12 @@ st.sidebar.subheader('Graph')
 threshold = st.sidebar.slider("Similarity Threshold",0.0, 1.0)
 st.title('Medical Graph')
 
+remove_stop = st.checkbox('Remove stopwords')
+if remove_stop:
+    graph_file = srsly.read_json('graph_no_stop.json')
+else:
+    graph_file = srsly.read_json('graph_with_stop.json')
+
 page_graph = nx.Graph()
 graph = Network(width='100%',bgcolor="white", font_color="#444444", directed=True, heading='', notebook=True)
 for link in graph_file['links']:
