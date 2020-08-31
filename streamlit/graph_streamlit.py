@@ -16,7 +16,7 @@ from plotly.express import scatter_3d
 def st_graph(html):
     graph_file = codecs_open(html, 'r')
     page = graph_file.read()
-    stc.html(page, width=1000, height=1600)
+    stc.html(page, width=1000, height=600)
 
 def pre_processing(text):
     text = text.replace('–','')
