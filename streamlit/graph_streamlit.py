@@ -1,21 +1,20 @@
-import srsly
-import codecs
+from srsly import read_json
+from codecs import open as codecs_open
 import streamlit as st
-import spacy_streamlit
-import networkx as nx
+from networkx import pagerank, Graph
 import matplotlib.pyplot as plt
 from pyvis.network import Network
-from spacy_streamlit import load_model
+from spacy_streamlit import load_model, visualize_ner, visualize_parser
 import streamlit.components.v1 as stc
 from nltk.tokenize import sent_tokenize
 from numpy import array
 from umap import UMAP
 from sklearn.preprocessing import StandardScaler
-import plotly.express as px
+from plotly.express import scatter_3d
 
 
 def st_graph(html):
-    graph_file = codecs.open(html, 'r')
+    graph_file = codecs_open(html, 'r')
     page = graph_file.read()
     stc.html(page, width=800, height=600)
 
@@ -30,14 +29,14 @@ def pre_processing(text):
     return text
 
 def page_rank(n, page_graph):
-    ranks = nx.pagerank(page_graph, alpha=0.9)
+    ranks = pagerank(page_graph, alpha=0.9)
     summary = sorted(ranks.keys(), key=lambda k: ranks[k], reverse=True)[:n]
     return summary, ranks
 
-graph_file = srsly.read_json('graph_json.json')
+graph_file = read_json('graph_json.json')
 
 #Pre-Processing 
-transcription = srsly.read_json('medical_transcription.json')
+transcription = read_json('medical_transcription.json')
 transcription_cleaned = pre_processing(transcription['text'])
 sentences = sent_tokenize(transcription_cleaned)
 
@@ -62,7 +61,7 @@ if remove_stop:
 else:
     graph_file = srsly.read_json('graph_with_stop.json')
 
-page_graph = nx.Graph()
+page_graph = Graph()
 graph = Network(width='100%',bgcolor="white", font_color="#444444", directed=True, heading='', notebook=True)
 for link in graph_file['links']:
     similarity = float(link['weight'])
@@ -89,8 +88,8 @@ st.pyplot()
 st.subheader("Sentence")
 text = st.selectbox("", sentences)
 doc = nlp(text)
-spacy_streamlit.visualize_ner(doc, labels=nlp.get_pipe("ner").labels, show_table=False, title='Named Entity Recognition')
-spacy_streamlit.visualize_parser(doc)
+visualize_ner(doc, labels=nlp.get_pipe("ner").labels, show_table=False, title='Named Entity Recognition')
+visualize_parser(doc)
 
 #Umap 3D
 st.subheader("Embedding Visualization")
@@ -106,5 +105,5 @@ vectors = vectors[:n_words, :]
 reducer = UMAP(n_components=3)
 scaled_data = StandardScaler().fit_transform(vectors)
 embedding = reducer.fit_transform(scaled_data)
-fig = px.scatter_3d(x = embedding[:, 0], y = embedding[:, 1], z = embedding[:, 2], text = words, hover_name=words)
+fig = scatter_3d(x = embedding[:, 0], y = embedding[:, 1], z = embedding[:, 2], text = words, hover_name=words)
 st.plotly_chart(fig)
