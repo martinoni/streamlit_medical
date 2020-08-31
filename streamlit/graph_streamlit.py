@@ -49,7 +49,7 @@ st.sidebar.subheader('Model')
 model = st.sidebar.selectbox("Model name", ["Clinical", "General"])
 
 if model == 'Clinical':
-    nlp = load_model("en_ner_bc5cdr_md")
+    nlp = load_model("en_ner_bc5cdr_md/en_ner_bc5cdr_md/en_ner_bc5cdr_md-0.2.5")
 elif model == 'General':
     nlp = load_model("en_core_web_sm")
 
