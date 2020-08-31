@@ -29,7 +29,7 @@ def pre_processing(text):
     return text
 
 def page_rank(n, page_graph):
-    ranks = pagerank(page_graph, alpha=0.9)
+    ranks = pagerank(page_graph, alpha=0.6)
     summary = sorted(ranks.keys(), key=lambda k: ranks[k], reverse=True)[:n]
     return summary, ranks
 
