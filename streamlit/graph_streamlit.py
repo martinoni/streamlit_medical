@@ -11,9 +11,6 @@ from numpy import array
 from umap import UMAP
 from sklearn.preprocessing import StandardScaler
 from plotly.express import scatter_3d
-from nltk import download
-download('punkt')
-
 
 
 def st_graph(html):
