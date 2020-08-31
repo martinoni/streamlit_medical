@@ -11,6 +11,9 @@ from numpy import array
 from umap import UMAP
 from sklearn.preprocessing import StandardScaler
 from plotly.express import scatter_3d
+from nltk import download
+download('punkt')
+
 
 
 def st_graph(html):
@@ -57,9 +60,9 @@ st.title('Medical Graph')
 
 remove_stop = st.checkbox('Remove stopwords')
 if remove_stop:
-    graph_file = srsly.read_json('graph_no_stop.json')
+    graph_file = read_json('graph_no_stop.json')
 else:
-    graph_file = srsly.read_json('graph_with_stop.json')
+    graph_file = read_json('graph_with_stop.json')
 
 page_graph = Graph()
 graph = Network(width='100%',bgcolor="white", font_color="#444444", directed=True, heading='', notebook=True)
